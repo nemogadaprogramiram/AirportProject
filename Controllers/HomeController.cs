@@ -63,13 +63,13 @@ namespace PlaneProject.Controllers
             {
                 Procedures.Procedures.ChangeCapacityBusinessClass(id);
                 Procedures.Procedures.Reservation(reservationsModel);
-                SendEmail(reservationsModel, "Successfully made reservation!", "We wish you wonderful trip!");
+                SendEmail(reservationsModel,"Successfully made reservation!", $"We wish you wonderful trip! You're flight is {reservationsModel.NameOfFlight} and you're type of ticket is {reservationsModel.TypeOfTicket}.");
             }
             else if (reservationsModel.TypeOfTicket == "Second class" && passangers.CapacityOfPassengers > 0)
             {
                 Procedures.Procedures.ChangeCapacityOfPassengers(id);
                 Procedures.Procedures.Reservation(reservationsModel);
-                SendEmail(reservationsModel, "Successfully made reservation!", "We wish you wonderful trip!");
+                SendEmail(reservationsModel, "Successfully made reservation!", $"We wish you wonderful trip! You're flight is {reservationsModel.NameOfFlight} and you're type of ticket is {reservationsModel.TypeOfTicket}.");
             }
             else
             {
