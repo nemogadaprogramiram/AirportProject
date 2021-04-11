@@ -1,0 +1,108 @@
+﻿@model PlaneProject.Models.Flights
+
+@{
+    ViewBag.Title = "Edit Flight";
+}
+<h3 style="color:red">@ViewBag.Message</h3>
+<h2>EditFlight</h2>
+<div class="row">
+    <div class="col-md-6">
+        @using (Html.BeginForm("EditFlights", "Admin", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <h4>Flights</h4>
+                <hr />
+                <div class="form-group">
+                    @Html.HiddenFor(model => model.Id, htmlAttributes: new { @class = "control-label col-md-2" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.LocationFrom, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.LocationFrom, new { placeholder = "Take-off Location", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.LocationFrom, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.LocationTo, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.LocationTo, new { placeholder = "Location Of Arrival", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.LocationTo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TimeOfFlight, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div>
+                            <input class="form-control" type="datetime-local" value="@Model.TimeOfFlight.ToString("yyyy-MM-ddTHH:mm")" name="TimeOfFlight">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TimeOfArrival, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div>
+                            <input class="form-control" type="datetime-local" value="@Model.TimeOfArrival.ToString("yyyy-MM-ddTHH:mm")" name="TimeOfArrival">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TypeOfPlane, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.TypeOfPlane, new { placeholder = "Type Of Plane", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.TypeOfPlane, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.UniqueNumberOfPlane, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.UniqueNumberOfPlane, new { placeholder = "Unique Number", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.UniqueNumberOfPlane, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.NamePilot, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.NamePilot, new { placeholder = "Pilot Name", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.NamePilot, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CapacityOfPassengers, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.CapacityOfPassengers, new { placeholder = "Capacity Economy Class", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CapacityOfPassengers, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CapacityBusinessClass, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.CapacityBusinessClass, new { placeholder = "Capacity Business Class", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CapacityBusinessClass, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input style="width:100%" type="submit" value="Edit" class="btn form-btn" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-md-6">
+        <img src="@Url.Content("~/Photos/FlightPhoto.jpg")"alt="AirPlane" width="550" height="450"style="padding-top:100px;margin-top:100px" />
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

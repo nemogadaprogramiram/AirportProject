@@ -1,0 +1,100 @@
+﻿@model PlaneProject.Models.Flights
+
+@{
+    ViewBag.Title = "Create Flight";
+}
+<h3 style="color:red">@ViewBag.Message</h3>
+<h2>CreateFlight</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        @using (Html.BeginForm("FlightInsert", "Admin", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <h4>Flights</h4>
+                <hr />
+                @Html.HiddenFor(m => m.Id)
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.LocationFrom, new { placeholder = "Take-off Lokation", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.LocationFrom, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.LocationTo, new { placeholder = "Arrival Location", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.LocationTo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <div>
+                            <input class="form-control" type="datetime-local" id="TimeOfArrival" name="TimeOfFlight">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <div>
+                            <input class="form-control" type="datetime-local" id="TimeOfArrival" name="TimeOfArrival">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.TypeOfPlane, new { placeholder = "Type Of Plane", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.TypeOfPlane, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.UniqueNumberOfPlane, new { placeholder = "Unique Number", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.UniqueNumberOfPlane, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.NamePilot, new { placeholder = "Pilot Name", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.NamePilot, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.CapacityOfPassengers, new { placeholder = "Capacity Economy Class", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CapacityOfPassengers, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.CapacityBusinessClass, new { placeholder = "Capacity Business Class", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CapacityBusinessClass, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <input style="width:100%" type="submit" value="Create" class="btn form-btn" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-md-6">
+        <img src="@Url.Content("~/Photos/FlightPhoto.jpg")" alt="AirPlane" width="550" height="450" style="padding-top:100px;margin-top:100px" />
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
