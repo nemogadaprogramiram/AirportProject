@@ -9,6 +9,11 @@
 Линка за пакета:
 
 Dapper: https://www.nuget.org/packages/Dapper/
+Git:https://github.com/nemogadaprogramiram/AirportProject.git
+
+Допълнително:
+За да може да се тества проекта трябва да качите базата данни на локалния ви Sql Server. 
+
 
 
 Разработка: 

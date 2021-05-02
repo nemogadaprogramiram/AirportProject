@@ -1,6 +1,5 @@
 ﻿@model PagedList.IPagedList<PlaneProject.Models.Flights>
 @using PagedList.Mvc
-@using PlaneProject.Security
 
 @{
     ViewBag.Title = "Flights";
@@ -55,6 +54,7 @@
     .dropdown:hover .dropbtn {
         background-color: #ffa166;
         border-radius: 10px 10px 0px 0px;
+    }
 </style>
 <div class="dropdown" style="float:right;margin-bottom:10px">
     <button class="dropbtn">Element Per Page</button>
@@ -64,7 +64,7 @@
         <a href='@Html.Raw(@Url.Action("Flights", "Home",new {@pageSize=50}))'>50 </a>
     </div>
 </div>
-@if (SessionPersister.Role == "Admin")
+@if (User.IsInRole("Admin"))
 {
     <div>
         @Html.ActionLink("Create Flight", "CreateFlight", "Admin",null, htmlAttributes: new { @class = "btn form-btn" })
@@ -138,7 +138,7 @@
     <td>
         @Html.DisplayFor(modelItem => item.CapacityBusinessClass)
     </td>
-    @if (SessionPersister.Role == "Admin")
+    @if (User.IsInRole("Admin"))
     {
         <td>
             <div style="margin-bottom:10px">@Html.ActionLink(linkText: "Edit", actionName: "EditFlight", controllerName: "Admin", routeValues: item, htmlAttributes: new { @class = " btn form-btn" })</div>
@@ -194,8 +194,7 @@
     <td>
         @Html.DisplayFor(modelItem => item.CapacityBusinessClass)
     </td>
-
-    @if (SessionPersister.Role == "Admin")
+    @if (User.IsInRole("Admin"))
     {
         <td>
             <div style="margin-bottom:10px">@Html.ActionLink(linkText: "Edit", actionName: "EditFlight", controllerName: "Admin", routeValues: item, htmlAttributes: new { @class = " btn form-btn" })</div>

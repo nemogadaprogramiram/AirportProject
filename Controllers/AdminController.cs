@@ -8,7 +8,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using PagedList;
 using PlaneProject.Models;
-using PlaneProject.Security;
+
 
 namespace PlaneProject.Controllers
 {
@@ -18,14 +18,13 @@ namespace PlaneProject.Controllers
         static bool Check;
         // GET: Admin
         #region Register
-
-        [CustomAuthorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult Register()
         {
             return View();
         }
         [HttpPost]
-        [CustomAuthorize(Roles = "Admin")]
+
         public ActionResult RegisterInsert(UserModel userModel)
         {
             userModel.Password = Encode(userModel.Password);
@@ -36,15 +35,10 @@ namespace PlaneProject.Controllers
         #endregion
 
         #region Reservations
-        [CustomAuthorize(Roles = "Admin,Employee")]
+        [Authorize(Roles = "Admin,Employee")]
         public ActionResult Reservations(int? page,int? pageSize)
         {
             List<Reservations> reservationsModel = Procedures.Procedures.SelectReservations();
-            if (pageSize != null)
-            {
-                SessionPersister.PageSizeReservations = pageSize;
-            }
-            pageSize = SessionPersister.PageSizeReservations;
             int pageNumber = (page ?? 1);
             ViewBag.Message = pageNumber.ToString();
             return View(reservationsModel.ToPagedList(pageNumber, pageSize??10));
@@ -65,47 +59,42 @@ namespace PlaneProject.Controllers
         #endregion
 
         #region Users
-        [CustomAuthorize(Roles = "Admin")]
+
         public ActionResult OrderByUsers(string page, string orderBy)
         {
             List<UserModel> reservationsModel = Procedures.Procedures.ByOrderUsers(orderBy);
-            int? pageSize = SessionPersister.PageSizeUsers;
             int pageNumber = Convert.ToInt32(page);
             ViewBag.Message = pageNumber.ToString();
             foreach (var item in reservationsModel)
             {
                 item.Password = Decode(item.Password);
             }
-            return View("Users", reservationsModel.ToPagedList(pageNumber, pageSize??10));
+            return View("Users", reservationsModel.ToPagedList(pageNumber, 10));
         }
 
-        [CustomAuthorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult Users(int? page,int? pageSize)
         {
             List<UserModel> userModels = Procedures.Procedures.SelectUsers();
-            if (pageSize!=null)
-            {
-                SessionPersister.PageSizeUsers = pageSize;
-            }
             int pageNumber = (page ?? 1);
-            pageSize = SessionPersister.PageSizeUsers;
+
             ViewBag.Message = pageNumber.ToString();
             return View(userModels.ToPagedList(pageNumber, pageSize??10));
         }
-        [CustomAuthorize(Roles = "Admin")]
+
         public ActionResult EditUsers(UserModel userModel)
         {
             return View(userModel);
         }
         [HttpPost]
-        [CustomAuthorize(Roles = "Admin")]
+
         public ActionResult EditUser(UserModel userModel)
         {
             userModel.Password = Encode(userModel.Password);
             Procedures.Procedures.UpdateUsers(userModel,userModel.Id);
             return Redirect("/Admin/Users");
         }
-        [CustomAuthorize(Roles = "Admin")]
+
         public ActionResult DeleteUser(UserModel userModel)
         {
             Procedures.Procedures.DeleteUsers(userModel.Id);
@@ -115,7 +104,7 @@ namespace PlaneProject.Controllers
         #endregion
 
         #region Flights
-        [CustomAuthorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult CreateFlight()
         {
             return View();
@@ -216,6 +205,7 @@ namespace PlaneProject.Controllers
             Procedures.Procedures.UpdateFlights(flightModel,flightModel.Id);
             return Redirect("/Home/Flights");
         }
+        [Authorize(Roles = "Admin")]
         public ActionResult DeleteFlights(Flights flightModel)
         {
             Procedures.Procedures.DeleteFlights(flightModel.Id);

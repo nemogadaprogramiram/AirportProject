@@ -9,7 +9,6 @@ using System.Web;
 using System.Web.Mvc;
 using PlaneProject.Models;
 using PagedList;
-using PlaneProject.Security;
 
 namespace PlaneProject.Controllers
 {
@@ -29,11 +28,6 @@ namespace PlaneProject.Controllers
         public ActionResult Flights(int? page, int? pageSize)
         {
             List<Flights> flights = Procedures.Procedures.SelectFlights();
-            if (pageSize != null)
-            {
-                SessionPersister.PageSizeFlights = pageSize;
-            }
-            pageSize = SessionPersister.PageSizeFlights;
             int pageNumber = (page ?? 1);
             return View(flights.ToPagedList(pageNumber, pageSize??10));
         }

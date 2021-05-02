@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using PlaneProject.ViewModels;
 using PlaneProject.Models;
-using PlaneProject.Security;
+using System.Web.Security;
+using System.Text;
 
 namespace PlaneProject.Controllers
 {
@@ -13,36 +13,44 @@ namespace PlaneProject.Controllers
     {
         // GET: Account
 
+        [Authorize]
         public ActionResult Logout()
         {
-            SessionPersister.Username = null;
-            SessionPersister.Role = null;
-            return Redirect("/Home/Index");
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login", "Account");
         }
-        public ActionResult AccountLogin(string returnUrl)
+        public ActionResult Login()
         {
-            ViewBag.Message = returnUrl;
             return View();
         }
-        [HttpPost]
-        public ActionResult Login(AccountViewModel avm,string returnUrl)
+        string Encode(string password)
         {
-            AccountModel am = new AccountModel();
-            if (string.IsNullOrEmpty(avm.Account.Username) || string.IsNullOrEmpty(avm.Account.Passsword)
-                || am.Login(avm.Account.Username, avm.Account.Passsword) == null)
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(password));
+        }
+        [HttpPost]
+        public ActionResult Login(UserTable model, string returnUrl)
+        {
+            AirportDatabaseEntities db = new AirportDatabaseEntities();
+            model.Password = Encode(model.Password);
+            var dataItem = db.UserTable.Where(x => x.Username == model.Username && x.Password ==model.Password).FirstOrDefault();
+            if (dataItem != null)
             {
-                ViewBag.Error = "Invalid account!";
-                return View("AccountLogin");
+                FormsAuthentication.SetAuthCookie(dataItem.Username, false);
+                if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
+                         && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                {
+                    return Redirect(returnUrl);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            SessionPersister.Username = avm.Account.Username;
-
-            SessionPersister.Role = am.FindRole(SessionPersister.Username);
-            if (returnUrl != null)
+            else
             {
-                return Redirect(returnUrl);
+                ModelState.AddModelError("", "Invalid user/pass");
+                return View();
             }
-            
-            return Redirect("/Home/Index");
         }
     }
 }

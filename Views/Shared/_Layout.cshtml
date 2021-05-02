@@ -1,5 +1,4 @@
 ﻿<!DOCTYPE html>
-@using PlaneProject.Security;
 <html>
 <head>
     <meta charset="utf-8" />
@@ -24,13 +23,13 @@
                         <li>@Html.ActionLink("About", "About", "Home", null, new { @class = "navbar-link" })</li>
                         <li>@Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "navbar-link" })</li>
                         <li>@Html.ActionLink("Flights", "Flights", "Home", null, new { @class = "navbar-link" })</li>
-                        @if (SessionPersister.Role == null)
+                        @if (!User.IsInRole("Admin"))
                         {
-                            <li>@Html.ActionLink("Login", "AccountLogin", "Account", null, new { @class = "navbar-link" })</li>
+                            <li>@Html.ActionLink("Login", "Login", "Account", null, new { @class = "navbar-link" })</li>
                         }
                         else
                         {
-                            if (SessionPersister.Role == "Admin")
+                            if (User.IsInRole("Admin"))
                             {
                                 <li>@Html.ActionLink("Users", "Users", "Admin", null, new { @class = "navbar-link" })</li>
                             }
@@ -39,9 +38,9 @@
                         }
 
                     </ul>
-                    @if(SessionPersister.Role!=null)
+                    @if (User.Identity.IsAuthenticated)
                     {
-                        <h2 style="float: right;color: white;font-style: oblique">Welcome @SessionPersister.Username</h2>
+                        <h2 style="float: right;color: white;font-style: oblique">Welcome @User.Identity.Name</h2>
                     }
                 </div>
             </div>
